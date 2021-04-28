@@ -1,0 +1,88 @@
+<div class="ui-g ui-fluid header-margin">
+  <div class="ui-g-12 ">
+    <header>
+      <app-header></app-header>
+    </header>
+  </div>
+</div>
+
+<!-- table -->
+<div class="ui-g ui-fluid">
+  <div class="ui-g-12 ui-md-offset-1 ui-md-10" style="text-align: left;">
+    <h2>Welcome!</h2>
+    <h4>Employee List</h4>
+    <button pButton type="button" id="new-employee" label="New Employee" (click)="onShow('New')" style="width: auto !important; margin-bottom: 0.3em;"></button>
+    <p-table [value]="employees" selectionMode="single" [paginator]="true" [rows]="5" >
+      <ng-template pTemplate="header">
+          <tr >
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Gender</th>
+              <th>Actions</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+          <tr [pSelectableRow]="rowData" (click)="onShow('Update', rowData)">
+              <td>{{rowData.firstName}}</td>
+              <td>{{rowData.lastName}}</td>
+              <td>{{rowData.gender}}</td>
+              <td>
+                  <button pButton type="button" id="edit-employee" label="Edit"  (click)="onShow('Update', rowData)"></button>
+                  <button pButton type="button" id="delete-employee" label="Delete" (click)="onDeleteRow($event, rowData)"></button>
+              </td>
+          </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<div id="success-message">
+  <p-messages [(value)]="lowerLeftNotification"></p-messages>
+</div>
+
+<!-- sidebar -->
+<div class="ui-g ui-fuid">
+
+  <p-sidebar [(visible)]="display" [showCloseIcon]="true" [dismissible]="false">
+    <p-messages [(value)]="msgs"></p-messages>
+    <form [formGroup]="sidebarForm">
+      <h2>Employee Information</h2>
+
+      <span>First Name</span>
+      <input type="text" pInputText formControlName="firstName" #firstName/>
+
+      <span>Last Name</span>
+      <input type="text" pInputText formControlName="lastName" />
+
+      <span>Gender</span>
+      <p-dropdown
+            [options]="gender"
+            [style]="{'width': '100%'}"
+            formControlName="gender"></p-dropdown>
+
+      <span>Birth Date</span>
+      <input type="text" pInputText formControlName="birthDate" />
+
+      <span>Nationality</span>
+      <p-dropdown
+          [options]="nationality"
+          [style]="{'width': '100%'}"
+          formControlName="nationality"></p-dropdown>
+
+      <div class="ui-g" style="margin-top: 20px;">
+        <button
+          pButton
+          type="button"
+          [label]="formType === 'New' ? 'Add' : formType"
+          (click)="onInsertData()"
+          class="button-margin"></button>
+        <button
+          pButton
+          type="button"
+          label="Clear"
+          (click)="onClearForm()"
+          class="ui-button-danger button-margin"></button>
+      </div>
+      </form>
+  </p-sidebar>
+</div>
